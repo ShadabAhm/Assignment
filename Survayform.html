@@ -1,0 +1,179 @@
+ <!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #4a26e8;
+        }
+        form {
+            max-width: 600px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="checkbox"] {
+            margin-top: 3px;
+        }
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button.reset {
+            background-color: #f44336;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        h1{
+            text-align: center;
+            color: #fff;
+            font-weight: lighter;
+        }
+    </style>
+
+</head>
+
+<body>
+<div>
+    <h1>Customer Survay Form</h1>
+</div>
+<form id="surveyForm">
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" name="firstName" required placeholder="Enter your first name">
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" name="lastName" required placeholder="Enter your last name">
+    <label for="dob">Date of Birth:</label>
+    <input type="date" id="dob" name="dob" required>
+    <label for="country">Country:</label>
+    <select id="country" name="country" required>
+        <option value="canada">India</option>
+        <option value="canada">London</option>
+        <option value="canada">Turky</option>
+        <option value="canada">Pakistan</option>
+        <option value="usa">USA</option>
+        <option value="canada">Canada</option>
+     </select>
+    <label>Gender:</label>
+    <input type="checkbox" id="male" name="gender" value="male">
+    <label for="male">Male</label>
+    <input type="checkbox" id="female" name="gender" value="female">
+    <label for="female">Female</label>
+    <label for="profession">Profession:</label>
+    <input type="text" id="profession" name="profession" required placeholder="Enter your profession">
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required placeholder="Enter your email id">
+    <label for="mobile">Mobile Number:</label>
+    <input type="tel" id="mobile" name="mobile" required placeholder="Enter your mobile number">
+    <button type="button" onclick="submitForm()">Submit</button>
+    <button type="button" class="reset" onclick="resetForm()">Reset</button>
+    <div id="result"></div>
+</form>
+<div id="popup" class="popup"></div>
+<div id="overlay" class="overlay"></div>
+<script>
+    function submitForm() {
+        // Perform validation and processing here
+
+        const emailInput = document.getElementById("email");
+        const mobileInput = document.getElementById("mobile");
+        const resultDiv = document.getElementById("result");
+
+        // Regular expression for email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        // Regular expression for mobile number validation
+        const mobileRegex = /^\d{10}$/;
+
+        const email = emailInput.value;
+        const mobile = mobileInput.value;
+
+        // Check email format
+        if (!emailRegex.test(email)) {
+            resultDiv.innerHTML = "Invalid email format";
+            resultDiv.style.color = "red";
+            return;
+        }
+
+        // Check mobile number format
+        if (!mobileRegex.test(mobile)) {
+            resultDiv.innerHTML = "Invalid mobile number format";
+            resultDiv.style.color = "red";
+            return;
+        }
+        resultDiv.innerHTML = "Both email and mobile are valid";
+        resultDiv.style.color = "green";
+        
+        // For simplicity, let's just show a popup with selected values
+        const form = document.getElementById('surveyForm');
+        const popup = document.getElementById('popup');
+        const overlay = document.getElementById('overlay');
+        const values = {};
+        for (let i = 0; i < form.elements.length; i++) {
+            const element = form.elements[i];
+            if (element.type !== 'button') {
+                values[element.name] = element.type === 'checkbox' ? element.checked : element.value;
+            }
+        }
+        const popupContent = Object.entries(values).map(([key, value]) => `<p><strong>${key}:</strong> ${value}</p>`).join('');
+        popup.innerHTML = popupContent;
+        popup.style.display = 'block';
+        overlay.style.display = 'block';
+    }
+    function resetForm() {
+        // Reset form values
+        const form = document.getElementById('surveyForm');
+        form.reset();
+        // Close the popup
+        const popup = document.getElementById('popup');
+        const overlay = document.getElementById('overlay');
+        popup.style.display = 'none';
+        overlay.style.display = 'none';
+    }
+</script>
+</body>
+</html> 
